@@ -1,0 +1,26 @@
+<h1>Enviar mensagem sobre o acidente: {{ acidente.titulo }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="enviado_para">Enviar para:</label>
+        {{ form.enviado_para }}
+    </div>
+    <div>
+        <label for="conteudo">Mensagem:</label>
+        {{ form.conteudo }}
+    </div>
+    <button type="submit">Enviar Mensagem Manual</button>
+</form>
+
+{% if ultima_mensagem %}
+    <h2>Última mensagem enviada:</h2>
+    <p><strong>Para:</strong> {{ ultima_mensagem.enviado_para }}</p>
+    <p><strong>Mensagem:</strong> {{ ultima_mensagem.conteudo }}</p>
+    <form method="post" action="{% url 'reenviar_mensagem' acidente.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="conteudo" value="{{ ultima_mensagem.conteudo }}">
+        <input type="hidden" name="enviado_para" value="{{ ultima_mensagem.enviado_para }}">
+        <button type="submit">Reenviar Última Mensagem</button>
+    </form>
+{% endif %}

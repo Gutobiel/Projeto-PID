@@ -147,15 +147,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Configurações de e-mail
 EMAIL_HOST = 'smtp.gmail.com'  # Servidor SMTP do Gmail
 EMAIL_PORT = 587  # Porta para conexão SMTP
-EMAIL_USE_TLS = True  # Use TLS para criptografar a conexão
-EMAIL_HOST_USER = 'smvrumvrum@gmail.com'  # Seu endereço de e-mail do Gmail
-EMAIL_HOST_PASSWORD = 'aaxs nabd hvrg eciz'  # Sua senha do Gmail
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = 'smvrumvrum@gmail.com' 
+EMAIL_HOST_PASSWORD = 'aaxs nabd hvrg eciz'  
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Configurações de Autenticação
 LOGIN_REDIRECT_URL = 'menu-principal'
 LOGOUT_REDIRECT_URL = 'login'
-LOGIN_URL = 'login'  # Corrected setting name
+LOGIN_URL = 'login'  
 
 
 AUTH_USER_MODEL = 'cadastros.CustomUser'

@@ -6,14 +6,12 @@
 Vrum Vrum | Acidentes
 {% endblock title %}
 
-
-{%block 'head'%} 
+{% block 'head' %}
 {% block additional_css %}
-<link rel="stylesheet" href="{%static 'css/styles.css'%}">
-<link rel="stylesheet" href="{%static 'css/acidentes.css'%}">
-{%endblock%}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/acidentes.css' %}">
 {% endblock %}
-
+{% endblock %}
 
 {% block content %}
 
@@ -27,91 +25,154 @@ Vrum Vrum | Acidentes
     <hr>
 </div>
 
-    <div id="Semaforo-Content" class="container">
-        <div class="left-section">
-            
-            <div id="line-semaforo"></div>
-            <div id="Tabela-semaforo">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Endereço</th>
-                            <th>Tipo</th>
-                            <th>Marca</th>
-                            <th>Modelo</th>
-                            <th width="180">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for semaforo in semaforos %}
-                        <tr>
-                            <td>{{ semaforo.codigo }}</td>
-                            <td>{{ semaforo.endereco }}</td>
-                            <td>{{ semaforo.tipo }}</td>
-                            <td>{{ semaforo.marca }}</td>
-                            <td>{{ semaforo.modelo }}</td>
-                            <td class="justify-content-center text-center">
-                                <a href="#" class="btn btn-primary btn-sm" title="Consultar">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{%url 'atualizar-semaforo' semaforo.pk%}" class="btn btn-warning btn-sm" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a href="{%url 'deletar-semaforo' semaforo.pk %}" class="btn btn-danger btn-sm" title="Excluir">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %} 
-                    </tbody>
-                </table>
-            </div>
-            <p class="form-label">INSIRA O LOCAL</p>
-            <form action='/' method='post' class="form-custom">
-                <input type='text' name='pesquisa' placeholder='Digite o id do semaforo'>
-                <button class="botao" type='submit'>Consultar</button>
-            </form>
-            <!-- Gravidade -->
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="gravidade" class="form-label">GRAVIDADE</label>
-                    <select id="gravidade" class="form-select">
-                        <option value="1">Leve</option>
-                        <option value="2">Média</option>
-                        <option value="3">Grave</option>
-                    </select>
-                </div>
-            
-                <div class="col-md-9">
-                    <label for="observacoes" class="form-label">OBSERVAÇÕES</label>
-                    <textarea id="observacoes" class="form-control" rows="10"></textarea>
-                </div>
+<div id="Semaforo-Content" class="container">
+    <div class="left-section">
+        <div id="line-semaforo"></div>
+        <div id="Tabela-semaforo">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Endereço</th>
+                        <th>Tipo</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th width="180">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for semaforo in semaforos %}
+                    <tr>
+                        <td>{{ semaforo.codigo }}</td>
+                        <td>{{ semaforo.endereco }}</td>
+                        <td>{{ semaforo.tipo }}</td>
+                        <td>{{ semaforo.marca }}</td>
+                        <td>{{ semaforo.modelo }}</td>
+                        <td class="justify-content-center text-center">
+                            <a href="#" class="btn btn-primary btn-sm" title="Consultar">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'atualizar-semaforo' semaforo.pk %}" class="btn btn-warning btn-sm" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="{% url 'deletar-semaforo' semaforo.pk %}" class="btn btn-danger btn-sm" title="Excluir">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="form-label">INSIRA O LOCAL</p>
+        <form action='/' method='post' class="form-custom">
+            {% csrf_token %}
+            <input type='text' name='pesquisa' placeholder='Digite o id do semaforo'>
+            <button class="botao" type='submit'>Consultar</button>
+        </form>
+
+        <!-- Gravidade -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="gravidade" class="form-label">GRAVIDADE</label>
+                <select id="gravidade" class="form-select">
+                    <option value="1">Leve</option>
+                    <option value="2">Média</option>
+                    <option value="3">Grave</option>
+                </select>
             </div>
 
-            <div class="buttons text-center mt-4">
-                <button class="btn btn-primary btn-sm col-md-4 p-2"><a href="#"></a>AO VIVO</button>
-                <button class="btn btn-danger btn-sm col-md-4 p-2">GRAVAR</button>
+            <div class="col-md-9">
+                <label for="observacoes" class="form-label">OBSERVAÇÕES</label>
+                <textarea id="observacoes" class="form-control" rows="10"></textarea>
             </div>
-     
         </div>
-        <div class="right-section">
-            <div class="control-container">
-                <h2>CONTROLE</h2>
-                <button class="control-button highlight">CHAMAR EMERGÊNCIA</button>
-                <button class="control-button">DEFINIR MENSAGEM</button>
-                <button class="control-button">IDENTIFICAR ENVOLVIDOS</button>
-                <button class="control-button">SINCRONIZAR SEMÁFORO</button>
-            </div>
-            <div class="report-container">
-                <div class="chart">
-                    <div style="height: 40%;"></div>
-                    <div style="height: 60%;"></div>
-                    <div style="height: 50%;"></div>
-                    <div style="height: 70%;"></div>
-                </div>
-                <a href="{% url 'relatorio'%}" class="report-button">GERAR RELATÓRIO</a>
-            </div>
+
+        <div class="buttons text-center mt-4">
+            <button class="btn btn-primary btn-sm col-md-4 p-2"><a href="#">AO VIVO</a></button>
+            <button class="btn btn-danger btn-sm col-md-4 p-2">GRAVAR</button>
         </div>
     </div>
- {%endblock%}
+
+    <div class="right-section">
+        <div class="control-container">
+            <h2>CONTROLE</h2>
+            <button class="control-button highlight">CHAMAR EMERGÊNCIA</button>
+            <button class="control-button" id="definirMensagemBtn">DEFINIR MENSAGEM</button>
+            <button class="control-button">IDENTIFICAR ENVOLVIDOS</button>
+            <button class="control-button">SINCRONIZAR SEMÁFORO</button>
+
+            <!-- Botão para alternar o modo do semáforo -->
+            <button class="control-button" id="toggleIntermitenteBtn">TORNAR INTERMITENTE</button>
+
+            <!-- Caixa para exibir o estado do semáforo -->
+            <div class="status-box" id="statusBox" style="display: none;">
+                <p id="statusMessage">Semáforo em modo intermitente</p>
+            </div>
+
+            <!-- Caixa de mensagem oculta -->
+            <div class="message-box" id="messageBox">
+              <label for="mensagem">Escreva sua mensagem:</label>
+              <textarea id="mensagem" class="form-control" rows="4" placeholder="Digite sua mensagem"></textarea>
+              <button class="btn btn-success mt-2">Enviar Mensagem</button>
+            </div>
+        </div>
+
+        <div class="report-container">
+            <div class="chart">
+                <div style="height: 40%;"></div>
+                <div style="height: 60%;"></div>
+                <div style="height: 50%;"></div>
+                <div style="height: 70%;"></div>
+            </div>
+            <a href="{% url 'relatorio' %}" class="report-button">GERAR RELATÓRIO</a>
+        </div>
+    </div>
+</div>
+
+<style>
+  .message-box {
+    display: none;
+    margin-top: 15px;
+  }
+
+  .visible {
+    display: block;
+  }
+
+  .status-box {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const definirMensagemBtn = document.getElementById('definirMensagemBtn');
+    const messageBox = document.getElementById('messageBox');
+    const toggleIntermitenteBtn = document.getElementById('toggleIntermitenteBtn');
+    const statusBox = document.getElementById('statusBox');
+    const statusMessage = document.getElementById('statusMessage');
+
+    let isIntermitente = false;
+
+    definirMensagemBtn.addEventListener('click', function() {
+      messageBox.classList.toggle('visible');
+    });
+
+    toggleIntermitenteBtn.addEventListener('click', function() {
+      isIntermitente = !isIntermitente;
+      if (isIntermitente) {
+        statusMessage.textContent = "Semáforo em modo intermitente";
+        toggleIntermitenteBtn.textContent = "TORNAR NORMAL";
+        statusBox.style.display = "block"; // Mostra a mensagem
+      } else {
+        statusMessage.textContent = "Semáforo em modo normal";
+        toggleIntermitenteBtn.textContent = "TORNAR INTERMITENTE";
+        statusBox.style.display = "none"; // Esconde a mensagem
+      }
+    });
+  });
+</script>
+
+{% endblock %}
