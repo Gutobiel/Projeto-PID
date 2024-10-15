@@ -3,12 +3,13 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Semaforo
 from .forms import SemaforoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+       
 class PaginaSemaforoView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     template_name = 'semaforos/semaforo.html'
     model = Semaforo
     context_object_name = 'semaforos' 
+    
 
 
 class AdicionarSemaforoView(LoginRequiredMixin, CreateView):

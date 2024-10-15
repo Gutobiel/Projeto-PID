@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import PaginaAcidentesView, EnviarMensagemView, ReenviarUltimaMensagemView
+from .views import PaginaAcidentesView
+from acidentes import views
 
 urlpatterns = [
     path('acidentes/', PaginaAcidentesView.as_view(), name='acidentes'),
-    path('enviar-mensagem/<int:acidente_id>/', EnviarMensagemView.as_view(), name='enviar_mensagem'),
-    path('reenviar-mensagem/<int:acidente_id>/', ReenviarUltimaMensagemView.as_view(), name='reenviar_mensagem'),
+     path('enviar_mensagem/', views.enviar_mensagem, name='enviar_mensagem'),
 ]

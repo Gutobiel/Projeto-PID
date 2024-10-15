@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,67 +22,22 @@ class PaginaAcidentesView(LoginRequiredMixin, TemplateView):
         context['semaforos'] = semaforos
         return context
 
-# View para enviar uma nova mensagem relacionada a um acidente
-class EnviarMensagemView(LoginRequiredMixin, FormView):
-    login_url = reverse_lazy('login')
-    template_name = 'acidentes/enviar_mensagem.html'
-    form_class = MensagemAcidenteForm
-    success_url = reverse_lazy('sucesso')
-
-    def form_valid(self, form):
-        conteudo = form.cleaned_data['conteudo']
-        email_destinatario = form.cleaned_data['enviado_para']
-        acidente = get_object_or_404(Acidente, id=self.kwargs['acidente_id'])
-
-        # Enviar o e-mail
+def enviar_mensagem(request):
+    if request.method == 'POST':
+        mensagem = request.POST.get('mensagem')
+        assunto = "Nova mensagem de acidente"
+        destinatario = 'samuelssf027@gmail.com'
+        
         try:
             send_mail(
-                subject=f'Nova Mensagem sobre o Acidente: {acidente.titulo}', 
-                message=conteudo,  
-                from_email=settings.EMAIL_HOST_USER,  
-                recipient_list=[email_destinatario],  
+                assunto,
+                mensagem,
+                settings.EMAIL_HOST_USER,
+                [destinatario],
                 fail_silently=False,
             )
+            return HttpResponse('Mensagem enviada com sucesso!')
         except Exception as e:
-            form.add_error(None, f"Erro ao enviar o e-mail: {e}")
-            return self.form_invalid(form)
+            return HttpResponse(f'Erro ao enviar mensagem: {e}')
 
-        # Salvar a mensagem no banco de dados associada ao acidente
-        MensagemAcidente.objects.create(
-            acidente=acidente, 
-            conteudo=conteudo, 
-            enviado_para=email_destinatario
-        )
-
-        return super().form_valid(form)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        acidente = get_object_or_404(Acidente, id=self.kwargs['acidente_id'])
-        context['acidente'] = acidente
-        context['ultima_mensagem'] = MensagemAcidente.objects.filter(acidente=acidente).last()
-        return context
-
-# View para reenviar a última mensagem associada a um acidente específico
-class ReenviarUltimaMensagemView(LoginRequiredMixin, TemplateView):
-    login_url = reverse_lazy('login')
-    template_name = 'acidentes/enviar_mensagem.html'
-
-    def post(self, request, acidente_id):
-        acidente = get_object_or_404(Acidente, id=acidente_id)
-        ultima_mensagem = MensagemAcidente.objects.filter(acidente=acidente).last()
-
-        if ultima_mensagem:
-            try:
-                send_mail(
-                    f"Reenvio da Mensagem sobre: {acidente.titulo}",
-                    ultima_mensagem.conteudo,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [ultima_mensagem.enviado_para],
-                    fail_silently=False,
-                )
-                return redirect('sucesso')
-            except Exception as e:
-                return render(request, self.template_name, {'error': f'Erro ao reenviar a mensagem: {e}'})
-        else:
-            return render(request, self.template_name, {'error': 'Nenhuma mensagem encontrada para reenviar.'})
+    return redirect('acidentes.html')

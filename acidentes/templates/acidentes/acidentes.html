@@ -112,10 +112,14 @@ Vrum Vrum | Acidentes
 
             <!-- Caixa de mensagem oculta -->
             <div class="message-box" id="messageBox">
-              <label for="mensagem">Escreva sua mensagem:</label>
-              <textarea id="mensagem" class="form-control" rows="4" placeholder="Digite sua mensagem"></textarea>
-              <button class="btn btn-success mt-2">Enviar Mensagem</button>
+                <form action="{% url 'enviar_mensagem' %}" method="post">
+                    {% csrf_token %}
+                    <label for="mensagem">Escreva sua mensagem:</label>
+                    <textarea id="mensagem" name="mensagem" class="form-control" rows="4" placeholder="Digite sua mensagem"></textarea>
+                    <button type="submit" class="btn btn-success mt-2">Enviar Mensagem</button>
+                </form>
             </div>
+            
         </div>
 
         <div class="report-container">
