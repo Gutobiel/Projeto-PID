@@ -11,5 +11,6 @@ urlpatterns = [
     path('pagina-admin/', AdminPaginaView.as_view(), name='administracao'),
     path('perfil/', PerfilView.as_view(), name='perfil'),
     path('relatorio/', RelatorioView.as_view(), name='relatorio'),
+    path('relatorio/pdf/', RelatorioView.as_view(), name='gerar_relatorio_pdf'),
 
 ]

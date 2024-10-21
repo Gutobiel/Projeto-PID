@@ -36,8 +36,16 @@ def enviar_mensagem(request):
                 [destinatario],
                 fail_silently=False,
             )
-            return HttpResponse('Mensagem enviada com sucesso!')
+            # HTML com redirecionamento automático após 3 segundos
+            return HttpResponse("""
+                <p>Mensagem enviada com sucesso! Você será redirecionado em 3 segundos...</p>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = '/acidentes/';
+                    }, 3000);
+                </script>
+            """)
         except Exception as e:
             return HttpResponse(f'Erro ao enviar mensagem: {e}')
-
+    
     return redirect('acidentes.html')
