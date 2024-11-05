@@ -4,17 +4,20 @@
 
 {% block title %}Trânsito{% endblock title %}
 
-{% block 'head'%}
+
+{%block 'head'%} 
 {% block additional_css %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-<link rel="stylesheet" href="{% static 'css/transito.css' %}">
-{% endblock %}
+<link rel="stylesheet" href="{%static 'css/styles.css'%}">
+<link rel="stylesheet" href="{%static 'css/transito.css'%}">
+{%endblock%}
 {% endblock %}
 
+
 {% block content %}
+
 <div class="col-md-9 col-lg-10 px-md-4 mt-3">
     {% block breadcrumbs %}
-        {% include 'breadcrumbs.html' with breadcrumb_items=breadcrumb_items %}
+         {% include 'breadcrumbs.html' with breadcrumb_items=breadcrumb_items %}
     {% endblock %}
 </div>
 <div class="col-md-9 col-lg-10 px-md-4 title">
@@ -24,27 +27,41 @@
 
 <div id="Transito-Content" class="container">
     <div class="left-section">
+{% comment %}         <div id="toggle-button" class="buttons text-center col-md-12 mt-4">
+            <button class="btn btn-primary btn-sm col-md-4 p-2" onclick="toggleContent('mapa')">Mostrar Mapa</button>
+            <button class="btn btn-primary btn-sm col-md-4 p-2" onclick="toggleContent('video')">Mostrar Vídeo</button>
+        </div> {% endcomment %}
+
+        <!-- Mapa -->
         <div id="Mapa-transito">
-            <a href="https://www.bing.com/maps/traffic?setlang=pt-br&FORM=ntptra&cvid=227799ae76844c02a4726b10e0a2ee9f&ocid=msedgdhp&cp=-15.79167%7E-47.886315&lvl=15.3&incidentid=40839274664017000&incidenttype=5&incidentloc=-15.796572%7E-47.877389&detectedloc=-15.761736869812012%7E-47.891693115234375&detectedlocacc=362.43304443359375&pc=U531&ei=45">
+{% comment %}             <a href="https://www.bing.com/maps/traffic">
                 <img src="{% static 'assets/mapa-transito.png' %}" alt="Mapa de Trânsito">
-            </a>
+            </a> {% endcomment %}
+            <video width="100%" controls>
+            <source src="https://drive.google.com/file/d/1HHV8-U58wMZZi9GvM_hrESOngvNZk71O/view?usp=drive_link" type="video/mp4">
+              Seu navegador não suporta a tag de vídeo.
+          </video>
         </div>
+
         <p>INSIRA O LOCAL</p>
-        <form action='/' method='post'>
-            <input type='text' name='pesquisa' placeholder='Digite o id do semáforo'>
-            <button type='submit'>Consultar</button>
+        <form action="/" method="post">
+            <input type="text" name="pesquisa" placeholder="Digite o id do semáforo">
+            <button type="submit">Consultar</button>
         </form>
+
         <div class="buttons text-center col-md-12 mt-4">
             <button class="btn btn-primary btn-sm col-md-4 p-2"><a href="#">AO VIVO</a></button>
             <button class="btn btn-danger btn-sm col-md-4 p-2">GRAVAR</button>
         </div>
     </div>
+
     <div class="right-section">
         <div class="control-container">
             <h2>CONTROLE</h2>
-            <button class="control-button highlight" style="background-color: grey;">TORNAR INTERMITENTE</button>
+            <button class="control-button highlight">TORNAR INTERMITENTE</button>
             <button class="control-button">PROGRAMAR EVENTOS</button>
         </div>
+
         <div class="report-container">
             <div class="chart">
                 <div style="height: 40%;"></div>
@@ -56,38 +73,5 @@
         </div>
     </div>
 </div>
-
-<!-- CSS diretamente na página HTML -->
-<style>
-  .blink {
-    animation: blink-animation 1s steps(5, start) infinite;
-    background-color: yellow;
-  }
-
-  @keyframes blink-animation {
-    50% {
-      background-color: grey;
-    }
-  }
-</style>
-
-<!-- JavaScript para alternar a animação de piscar -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const intermitenteButton = document.querySelector('.control-button.highlight');
-
-    intermitenteButton.addEventListener('click', function() {
-      // Verifica se o botão já está piscando
-      if (intermitenteButton.classList.contains('blink')) {
-        // Remove o piscar e retorna à cor cinza
-        intermitenteButton.classList.remove('blink');
-        intermitenteButton.style.backgroundColor = 'grey';
-      } else {
-        // Aplica a animação de piscar
-        intermitenteButton.classList.add('blink');
-      }
-    });
-  });
-</script>
 
 {% endblock %}
