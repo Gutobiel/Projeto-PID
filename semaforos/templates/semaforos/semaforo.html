@@ -69,7 +69,7 @@
         <div id="Recursos-semaforo">
             <h2>INSIRA O LOCAL</h2>
             <form action='' method='post' class="form-custom">
-                <input type='text' name='pesquisa' placeholder='Digite o id do semáforo'>
+                <input type="text" name="pesquisa" pattern="[A-Za-z0-9]+" placeholder="Digite o código do semáforo"> {% comment %} adicionei um parametro pattern, para evitar sql injection {% endcomment %}
                 <button type='submit'>Consultar</button>
             </form>
             <div class="buttons text-center col-md-12 mt-4">

@@ -6,6 +6,7 @@ import string
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 
+
 def generate_random_string(length=8):
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for i in range(length))
